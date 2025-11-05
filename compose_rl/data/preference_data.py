@@ -308,6 +308,7 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
         """
         sample = super().__getitem__(idx)
         print(f'data keys: {sample.keys()}')
+        print(f'image_grid_thw: {sample["image_grid_thw"]}')
 
         # Handle prompt if available
         if isinstance(sample['chosen'], bytes):
