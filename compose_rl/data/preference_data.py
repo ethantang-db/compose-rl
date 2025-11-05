@@ -61,6 +61,7 @@ def pairwise_preference_dataset_collate_fn(
     # For VLMs
     token_type_ids = []
     pixel_values = []
+    image_grid_thw = []
 
     for sample in data:
         chosen = sample['chosen']
@@ -182,7 +183,7 @@ def pairwise_preference_dataset_collate_fn(
         if is_multimodal:
             # token_type_ids.append(cat_token_type_ids)  # type: ignore
             pixel_values.append(pixel_vals)
-            image_grid_thw.append(image_grid_thw_vals)
+            image_grid_thw.append(sample['image_grid_thw'])
 
     input_ids = ref_collate_fn(input_ids)['input_ids']
     attention_masks = torch.stack(attention_masks)
