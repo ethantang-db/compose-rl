@@ -331,19 +331,19 @@ def pairwise_offline_forward(
         }
 
         if is_multimodal:
-            chosen_token_type_ids, rejected_token_type_ids = extract_packed_chosen_rejected(
-                batch['token_type_ids'],
-                batch['chosen_len'],
-                batch['rejected_len'],
-                concat_seq_len,
-                pad_token_id=0,
-            )
+            # chosen_token_type_ids, rejected_token_type_ids = extract_packed_chosen_rejected(
+            #     batch['token_type_ids'],
+            #     batch['chosen_len'],
+            #     batch['rejected_len'],
+            #     concat_seq_len,
+            #     pad_token_id=0,
+            # )
 
             # TODO: Ask if assuming same pixel inputs is ok?
             multimodal_inputs = {
-                'token_type_ids':
-                    torch.cat([chosen_token_type_ids, rejected_token_type_ids],
-                              dim=0),
+                # 'token_type_ids':
+                #     torch.cat([chosen_token_type_ids, rejected_token_type_ids],
+                #               dim=0),
                 'pixel_values':
                     torch.cat([batch['pixel_values'], batch['pixel_values']],
                               dim=0),
