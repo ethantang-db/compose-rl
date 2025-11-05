@@ -63,7 +63,7 @@ def pairwise_preference_dataset_collate_fn(
     pixel_values = []
 
     for sample in data:
-        print(sample.keys())
+        print(f'sample keys: {sample.keys()}')
         chosen = sample['chosen']
         rejected = sample['rejected']
         prompt_len = sample['prompt_len']
@@ -307,6 +307,7 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
             idx (int): the index where we fetch the data in the StreamingDataset.
         """
         sample = super().__getitem__(idx)
+        print(f'data keys: {sample.keys()}')
 
         # Handle prompt if available
         if isinstance(sample['chosen'], bytes):
