@@ -347,6 +347,9 @@ def pairwise_offline_forward(
                 'pixel_values':
                     torch.cat([batch['pixel_values'], batch['pixel_values']],
                               dim=0),
+                'image_grid_thw':
+                    torch.cat([batch['image_grid_thw'], batch['image_grid_thw']],
+                              dim=0),
             }
 
             inputs.update(multimodal_inputs)

@@ -72,6 +72,7 @@ def pairwise_preference_dataset_collate_fn(
         is_multimodal = 'pixel_values' in sample.keys()
         if is_multimodal:
             pixel_vals = sample['pixel_values']
+            image_grid_thw_vals = sample['image_grid_thw']
             # chosen_token_type_ids = sample['chosen_token_type_ids']
             # rejected_token_type_ids = sample['rejected_token_type_ids']
         else:
@@ -181,6 +182,7 @@ def pairwise_preference_dataset_collate_fn(
         if is_multimodal:
             # token_type_ids.append(cat_token_type_ids)  # type: ignore
             pixel_values.append(pixel_vals)
+            image_grid_thw.append(image_grid_thw_vals)
 
     input_ids = ref_collate_fn(input_ids)['input_ids']
     attention_masks = torch.stack(attention_masks)
@@ -208,6 +210,9 @@ def pairwise_preference_dataset_collate_fn(
         pixel_values = torch.stack(pixel_values)
         # return_dict['token_type_ids'] = token_type_ids
         return_dict['pixel_values'] = pixel_values
+
+        image_grid_thw = torch.stack(image_grid_thw)
+        return_dict['image_grid_thw'] = image_grid_thw
 
     return return_dict
 
