@@ -406,7 +406,8 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
             # return_dict['rejected_token_type_ids'] = rejected_token_type_ids
         
         if 'image_grid_thw' in sample:
-            return_dict['image_grid_thw'] = torch.from_numpy(sample['image_grid_thw'])
+            # single examples, collapsing the first dim
+            return_dict['image_grid_thw'] = torch.from_numpy(sample['image_grid_thw'])[0]
             print(f'return_dict image_grid_thw: {return_dict["image_grid_thw"]}')
 
         return return_dict
