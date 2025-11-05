@@ -214,6 +214,7 @@ def pairwise_preference_dataset_collate_fn(
 
         image_grid_thw = torch.stack(image_grid_thw)
         return_dict['image_grid_thw'] = image_grid_thw
+        print(f'return_dict collate fn image_grid_thw: {return_dict["image_grid_thw"]}')
 
     return return_dict
 
@@ -406,6 +407,7 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
         
         if 'image_grid_thw' in sample:
             return_dict['image_grid_thw'] = torch.from_numpy(sample['image_grid_thw'])
+            print(f'return_dict image_grid_thw: {return_dict["image_grid_thw"]}')
 
         return return_dict
 
