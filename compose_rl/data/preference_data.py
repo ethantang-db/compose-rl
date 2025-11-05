@@ -63,7 +63,6 @@ def pairwise_preference_dataset_collate_fn(
     pixel_values = []
 
     for sample in data:
-        print(f'sample keys: {sample.keys()}')
         chosen = sample['chosen']
         rejected = sample['rejected']
         prompt_len = sample['prompt_len']
@@ -307,8 +306,6 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
             idx (int): the index where we fetch the data in the StreamingDataset.
         """
         sample = super().__getitem__(idx)
-        print(f'data keys: {sample.keys()}')
-        print(f'image_grid_thw: {sample["image_grid_thw"]}')
 
         # Handle prompt if available
         if isinstance(sample['chosen'], bytes):
@@ -405,6 +402,9 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
             return_dict['pixel_values'] = pixel_values
             # return_dict['chosen_token_type_ids'] = chosen_token_type_ids
             # return_dict['rejected_token_type_ids'] = rejected_token_type_ids
+        
+        if 'image_grid_thw' in sample:
+            return_dict['image_grid_thw'] = torch.from_numpy(sample['image_grid_thw'])
 
         return return_dict
 
