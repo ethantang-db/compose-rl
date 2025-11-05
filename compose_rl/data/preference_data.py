@@ -72,8 +72,8 @@ def pairwise_preference_dataset_collate_fn(
         is_multimodal = 'pixel_values' in sample.keys()
         if is_multimodal:
             pixel_vals = sample['pixel_values']
-            chosen_token_type_ids = sample['chosen_token_type_ids']
-            rejected_token_type_ids = sample['rejected_token_type_ids']
+            # chosen_token_type_ids = sample['chosen_token_type_ids']
+            # rejected_token_type_ids = sample['rejected_token_type_ids']
         else:
             pixel_vals = None
             chosen_token_type_ids = None
@@ -92,12 +92,12 @@ def pairwise_preference_dataset_collate_fn(
         pad_len = max_seq_len - chosen_len - rejected_len
         cat_batch = torch.cat([chosen, rejected], dim=-1)
 
-        if is_multimodal:
-            cat_token_type_ids = torch.cat([
-                chosen_token_type_ids,
-                rejected_token_type_ids,
-            ],
-                                           dim=-1)
+        # if is_multimodal:
+        #     cat_token_type_ids = torch.cat([
+        #         chosen_token_type_ids,
+        #         rejected_token_type_ids,
+        #     ],
+        #                                    dim=-1)
 
         if pad_len < 0:
             # We should truncate chosen and rejected by the same amount
@@ -116,21 +116,21 @@ def pairwise_preference_dataset_collate_fn(
             rejected = rejected[:-truncate_len]
             rejected[-1] = tokenizer.eos_token_id  # type: ignore
 
-            if is_multimodal:
-                chosen_token_type_ids = chosen_token_type_ids[:
-                                                              -truncate_len  # type: ignore
-                                                             ]
-                rejected_token_type_ids = rejected_token_type_ids[:  # type: ignore
-                                                                  -truncate_len]
+            # if is_multimodal:
+            #     chosen_token_type_ids = chosen_token_type_ids[:
+            #                                                   -truncate_len  # type: ignore
+            #                                                  ]
+            #     rejected_token_type_ids = rejected_token_type_ids[:  # type: ignore
+            #                                                       -truncate_len]
 
-                # NOTE: GEMMA specific: 0 == text token
-                chosen_token_type_ids[-1] = 0
-                rejected_token_type_ids[-1] = 0
-                cat_token_type_ids = torch.cat([
-                    chosen_token_type_ids,
-                    rejected_token_type_ids,
-                ],
-                                               dim=-1)
+            #     # NOTE: GEMMA specific: 0 == text token
+            #     chosen_token_type_ids[-1] = 0
+            #     rejected_token_type_ids[-1] = 0
+            #     cat_token_type_ids = torch.cat([
+            #         chosen_token_type_ids,
+            #         rejected_token_type_ids,
+            #     ],
+            #                                    dim=-1)
 
             cat_batch = torch.cat([chosen, rejected], dim=-1)
 
@@ -148,17 +148,17 @@ def pairwise_preference_dataset_collate_fn(
                 ],
                 dim=-1,  # type: ignore
             )
-            if is_multimodal:
-                cat_token_type_ids = torch.cat(
-                    [
-                        cat_token_type_ids,  # type: ignore
-                        torch.zeros(
-                            int(pad_len.item()),
-                            dtype=cat_token_type_ids.dtype,  # type: ignore
-                        ),
-                    ],
-                    dim=-1,
-                )
+            # if is_multimodal:
+            #     cat_token_type_ids = torch.cat(
+            #         [
+            #             cat_token_type_ids,  # type: ignore
+            #             torch.zeros(
+            #                 int(pad_len.item()),
+            #                 dtype=cat_token_type_ids.dtype,  # type: ignore
+            #             ),
+            #         ],
+            #         dim=-1,
+            #     )
 
         attention_mask = torch.logical_not(
             torch.eq(cat_batch, tokenizer.pad_token_id),  # type: ignore
@@ -179,7 +179,7 @@ def pairwise_preference_dataset_collate_fn(
             rejected_rewards.append(sample['rejected_reward'])
 
         if is_multimodal:
-            token_type_ids.append(cat_token_type_ids)  # type: ignore
+            # token_type_ids.append(cat_token_type_ids)  # type: ignore
             pixel_values.append(pixel_vals)
 
     input_ids = ref_collate_fn(input_ids)['input_ids']
@@ -204,9 +204,9 @@ def pairwise_preference_dataset_collate_fn(
         return_dict['rejected_reward'] = rejected_rewards
 
     if is_multimodal:  # type: ignore
-        token_type_ids = torch.stack(token_type_ids)
+        # token_type_ids = torch.stack(token_type_ids)
         pixel_values = torch.stack(pixel_values)
-        return_dict['token_type_ids'] = token_type_ids
+        # return_dict['token_type_ids'] = token_type_ids
         return_dict['pixel_values'] = pixel_values
 
     return return_dict
@@ -372,31 +372,31 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
                     f'Expect pixel values to be numpy.ndarray or PIL.Image type, but got {pixel_values_type}',
                 )
 
-            if isinstance(sample['chosen_token_type_ids'], bytes):
-                chosen_token_type_ids = self._read_binary_tokenized_sample(
-                    sample,
-                    'chosen_token_type_ids',
-                )
-                rejected_token_type_ids = self._read_binary_tokenized_sample(
-                    sample,
-                    'rejected_token_type_ids',
-                )
-            elif isinstance(sample['chosen_token_type_ids'], np.ndarray):
-                chosen_token_type_ids = torch.from_numpy(
-                    sample['chosen_token_type_ids'][:self.max_seq_len],
-                )
-                rejected_token_type_ids = torch.from_numpy(
-                    sample['rejected_token_type_ids'][:self.max_seq_len],
-                )
-            else:
-                token_type = type(sample['chosen_token_type_ids'])
-                raise ValueError(
-                    f'Expect token_type_ids to be numpy.ndarray or bytes, but got {token_type}',
-                )
+            # if isinstance(sample['chosen_token_type_ids'], bytes):
+            #     chosen_token_type_ids = self._read_binary_tokenized_sample(
+            #         sample,
+            #         'chosen_token_type_ids',
+            #     )
+            #     rejected_token_type_ids = self._read_binary_tokenized_sample(
+            #         sample,
+            #         'rejected_token_type_ids',
+            #     )
+            # elif isinstance(sample['chosen_token_type_ids'], np.ndarray):
+            #     chosen_token_type_ids = torch.from_numpy(
+            #         sample['chosen_token_type_ids'][:self.max_seq_len],
+            #     )
+            #     rejected_token_type_ids = torch.from_numpy(
+            #         sample['rejected_token_type_ids'][:self.max_seq_len],
+            #     )
+            # else:
+            #     token_type = type(sample['chosen_token_type_ids'])
+            #     raise ValueError(
+            #         f'Expect token_type_ids to be numpy.ndarray or bytes, but got {token_type}',
+            #     )
 
             return_dict['pixel_values'] = pixel_values
-            return_dict['chosen_token_type_ids'] = chosen_token_type_ids
-            return_dict['rejected_token_type_ids'] = rejected_token_type_ids
+            # return_dict['chosen_token_type_ids'] = chosen_token_type_ids
+            # return_dict['rejected_token_type_ids'] = rejected_token_type_ids
 
         return return_dict
 
