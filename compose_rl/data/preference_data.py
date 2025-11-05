@@ -378,6 +378,7 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
                 raise ValueError(
                     f'Expect pixel values to be numpy.ndarray or PIL.Image type, but got {pixel_values_type}',
                 )
+            print(f'pixel_values shape: {pixel_values.shape}')
 
             # if isinstance(sample['chosen_token_type_ids'], bytes):
             #     chosen_token_type_ids = self._read_binary_tokenized_sample(
