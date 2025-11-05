@@ -63,6 +63,7 @@ def pairwise_preference_dataset_collate_fn(
     pixel_values = []
 
     for sample in data:
+        print(sample.keys())
         chosen = sample['chosen']
         rejected = sample['rejected']
         prompt_len = sample['prompt_len']
