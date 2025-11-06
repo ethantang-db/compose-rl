@@ -354,7 +354,6 @@ def pairwise_offline_forward(
 
             inputs.update(multimodal_inputs)
 
-        print("pixel_values shape: ", inputs['pixel_values'].shape)
         output_logits = model(
             **inputs,
         ).logits

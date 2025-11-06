@@ -214,7 +214,6 @@ def pairwise_preference_dataset_collate_fn(
 
         image_grid_thw = torch.stack(image_grid_thw)
         return_dict['image_grid_thw'] = image_grid_thw
-        print(f'return_dict collate fn image_grid_thw: {return_dict["image_grid_thw"]}')
 
     return return_dict
 
@@ -378,7 +377,6 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
                 raise ValueError(
                     f'Expect pixel values to be numpy.ndarray or PIL.Image type, but got {pixel_values_type}',
                 )
-            print(f'pixel_values shape: {pixel_values.shape}')
 
             # if isinstance(sample['chosen_token_type_ids'], bytes):
             #     chosen_token_type_ids = self._read_binary_tokenized_sample(
@@ -409,7 +407,6 @@ class PairwisePreferenceStreamingDataset(StreamingDataset):
         if 'image_grid_thw' in sample:
             # single examples, collapsing the first dim
             return_dict['image_grid_thw'] = torch.from_numpy(sample['image_grid_thw'])[0]
-            print(f'return_dict image_grid_thw: {return_dict["image_grid_thw"]}')
 
         return return_dict
 

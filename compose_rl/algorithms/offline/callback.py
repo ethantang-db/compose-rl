@@ -98,8 +98,6 @@ class PairwiseReferencePolicyCallback(ReferencePolicyCallback):
         # Before every batch we need to do a forwards pass over the reference model
         with get_precision_context(state.precision):
             with torch.no_grad():
-                print(f'state.batch keys: {state.batch.keys()}')
-                print(f'state.batch image_grid_thw: {state.batch["image_grid_thw"]}')
                 assert self.reference_model is not None
                 reference_outputs = self.reference_model(state.batch)
                 state.batch.update({
