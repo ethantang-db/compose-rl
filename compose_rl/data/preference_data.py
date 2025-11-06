@@ -208,7 +208,7 @@ def pairwise_preference_dataset_collate_fn(
 
     if is_multimodal:  # type: ignore
         # token_type_ids = torch.stack(token_type_ids)
-        pixel_values = torch.stack(pixel_values)
+        pixel_values = torch.concat(pixel_values)  # qwen3 vl is concat
         # return_dict['token_type_ids'] = token_type_ids
         return_dict['pixel_values'] = pixel_values
 
