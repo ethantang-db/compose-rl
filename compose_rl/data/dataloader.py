@@ -93,6 +93,7 @@ def _qwen3_vl_get_num_tokens_in_batch(batch: Batch) -> dict[str, int]:
     image_tokens = batch['pixel_values'].shape[0]
     return {
         'total': text_tokens + image_tokens,
+        'loss_generating': 0,
     }
 
 
