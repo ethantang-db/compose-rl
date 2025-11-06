@@ -91,10 +91,7 @@ def _qwen3_vl_split_batch(batch: Batch, microbatch_size: int | float) -> Sequenc
 def _qwen3_vl_get_num_tokens_in_batch(batch: Batch) -> dict[str, int]:
     text_tokens = batch['input_ids'].numel()
     image_tokens = batch['pixel_values'].shape[0]
-    return {
-        'total': text_tokens + image_tokens,
-        'loss_generating': 0,
-    }
+    return text_tokens + image_tokens
 
 
 class Qwen3VLDataSpec(DataSpec):
