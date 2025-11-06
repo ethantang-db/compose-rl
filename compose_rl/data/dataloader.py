@@ -91,10 +91,8 @@ def _qwen3_vl_split_batch(batch: Batch, microbatch_size: int | float) -> Sequenc
 def _qwen3_vl_get_num_tokens_in_batch(batch: Batch) -> dict[str, int]:
     text_tokens = batch['input_ids'].numel()
     image_tokens = batch['pixel_values'].shape[0]
-    loss_generating_tokens = sum(batch['loss_generating_tokens'])
     return {
         'total': text_tokens + image_tokens,
-        'loss_generating': loss_generating_tokens,
     }
 
 
